@@ -32,6 +32,7 @@ const userSchema = new Schema(
     name: { type: String, required: [true, "El nombre es obligatorio"] },
     lastName: { type: String, required: [true, "El apellido es obligatorio"] },
     role: {
+      type: String,
       enum: ["CLIENT", "PROVIDER", "ADMIN"],
       default: "CLIENT",
       required: true,
@@ -43,6 +44,7 @@ const userSchema = new Schema(
     },
     providerData: { type: providerDataSchema },
     state: { type: Boolean, default: true },
+    google: { type: Boolean, default: false },
     password: { type: String, required: ["La contraseñá es obligatoria"] },
     img: { type: [String], default: [] },
   },
@@ -54,6 +56,7 @@ userSchema.pre("save", async function (next) {
     try {
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
+      this.email = this.email;
     } catch (error) {
       return next(error);
     }

@@ -1,5 +1,8 @@
+const jwt = require("jsonwebtoken");
+
 module.exports = {
-  generateJWT: async (uid) => {
-    // TODO: Agregar funcion que cree un token para loguearse
-  },
+  generateJWT: (uid) =>
+    jwt.sign({ uid }, process.env.SECRET_KEY, {
+      expiresIn: 0,
+    }),
 };
