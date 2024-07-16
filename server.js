@@ -29,8 +29,6 @@ class Server {
 
     this.app.use(
       fileUpload({
-        tempFileDir: "./temp/",
-        useTempFiles: true,
         createParentPath: true,
         limits: { fileSize: 50 * 1024 * 1024 }, // 50mb
       })

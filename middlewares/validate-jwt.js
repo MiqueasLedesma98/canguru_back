@@ -14,6 +14,11 @@ module.exports = {
 
       const user = await User.findById(uid).select("-password").lean();
 
+      if (!user.status)
+        return res.status(401).json({
+          msg: "Cuenta deshabilitada, pongase en contacto con un administrador",
+        });
+
       if (!user)
         return res.status(401).json({
           msg: "No autorizado, usuario no encontrado",

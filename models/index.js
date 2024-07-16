@@ -4,4 +4,5 @@ module.exports = {
   Service: require("./service.model"),
   User: require("./user.model"),
   Location: require("./location.model"),
+  Availability: require("./availability.model"),
 };

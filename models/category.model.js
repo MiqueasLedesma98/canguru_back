@@ -8,9 +8,10 @@ const categorySchema = new Schema(
       required: [true, "La categoria debe tener un nombre"],
     },
     description: { type: String, default: "" },
-    state: { type: Boolean, default: true },
+    status: { type: Boolean, default: true },
+    img: { type: [String], default: [] },
   },
-  { versionKey: false }
+  { timestamps: false, versionKey: false }
 );
 
 module.exports = model("Category", categorySchema);

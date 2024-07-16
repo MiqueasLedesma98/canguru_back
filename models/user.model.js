@@ -5,7 +5,7 @@ const providerDataSchema = new Schema(
   {
     services: [
       {
-        type: Schema.Types.ObjectId,
+        type: [Schema.Types.ObjectId],
         ref: "Service",
         required: [true, "El servicio es obligatorio"],
       },
@@ -17,7 +17,7 @@ const providerDataSchema = new Schema(
         required: [true, "La disponibilidad es obligatoria"],
       },
     ],
-    status: [{ type: Boolean, default: false }],
+    status: { type: Boolean, default: false },
     location: {
       type: Schema.Types.ObjectId,
       ref: "Location",
@@ -43,10 +43,10 @@ const userSchema = new Schema(
       unique: [true, "El email ya esta registrado en la DB"],
     },
     providerData: { type: providerDataSchema },
-    state: { type: Boolean, default: true },
+    status: { type: Boolean, default: true },
     google: { type: Boolean, default: false },
     password: { type: String, required: ["La contraseñá es obligatoria"] },
-    img: { type: [String], default: [] },
+    img: { type: String },
   },
   { versionKey: false }
 );

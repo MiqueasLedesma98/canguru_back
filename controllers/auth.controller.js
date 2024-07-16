@@ -30,6 +30,7 @@ module.exports = {
 
       const { password: dbPass, ...user } = await User.findOne({
         email: email.toLowerCase(),
+        status: true,
       }).lean();
 
       const match = bcrypt.compareSync(password, dbPass);

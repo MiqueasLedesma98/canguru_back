@@ -8,7 +8,8 @@ const serviceSchema = new Schema(
     durationOptions: { type: [Number], default: [3, 6, 12, 24] },
     price: { type: Number, required: true },
     description: { type: String, default: "" },
-    state: { type: Boolean, default: true },
+    status: { type: Boolean, default: true },
+    img: { type: [String], default: [] },
   },
   { versionKey: false }
 );
