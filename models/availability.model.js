@@ -12,6 +12,7 @@ const dayAvailabilitySchema = new Schema(
   {
     day: {
       type: String,
+      unique: true,
       enum: [
         "LUNES",
         "MARTES",

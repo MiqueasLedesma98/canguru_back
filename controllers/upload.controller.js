@@ -5,6 +5,8 @@ const { response } = require("express");
 
 const placeholderPath = join(__dirname, "../assets", "no-image.jpg");
 
+// TODO: Cambiarlo para que funcione con solo model.img type string
+
 module.exports = {
   uploadFile: async (req, res, next) => {
     try {

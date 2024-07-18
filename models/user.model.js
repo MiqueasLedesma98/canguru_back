@@ -47,6 +47,7 @@ const userSchema = new Schema(
     google: { type: Boolean, default: false },
     password: { type: String, required: ["La contraseñá es obligatoria"] },
     img: { type: String },
+    booking: { type: Schema.Types.ObjectId, ref: "Booking" },
   },
   { versionKey: false }
 );

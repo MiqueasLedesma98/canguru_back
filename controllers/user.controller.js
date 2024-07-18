@@ -53,8 +53,6 @@ module.exports = {
         price,
       });
 
-      await Promise.all([availability.save(), location.save(), service.save()]);
-
       const providerData = {
         services: [service],
         availability,
@@ -63,7 +61,12 @@ module.exports = {
 
       user.providerData = providerData;
 
-      await user.save();
+      await Promise.all([
+        availability.save(),
+        location.save(),
+        service.save(),
+        user.save(),
+      ]);
 
       return res.send({ msg: "OK", providerData });
     } catch (error) {

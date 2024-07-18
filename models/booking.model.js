@@ -1,20 +1,25 @@
 const { model, Schema } = require("mongoose");
 
+const timeslotSchema = new Schema(
+  {
+    start: { type: String, required: true }, // e.j., '09:00'
+    end: { type: String, required: true }, // e.j., '12:00'
+  },
+  { _id: false, versionKey: false }
+);
+
 const bookingSchema = new Schema(
   {
     service: { type: Schema.Types.ObjectId, ref: "Service" },
-    shopper: { type: Schema.Types.ObjectId, ref: "User" },
+    user: { type: Schema.Types.ObjectId, ref: "User" },
+    provider: { type: Schema.Types.ObjectId, ref: "User" },
     date: { type: Date, required: [true, "La fecha es obligatoria"] },
-    duration: {
-      type: Number,
-      required: [true, "La duración de la reserva es obligatoria"],
-    },
+    duration: { type: timeslotSchema, required: true },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "completed", "canceled"],
+      enum: ["pending", "confirmed", "canceled", "completed"],
       default: "pending",
     },
-    status: { type: Boolean, default: true },
   },
   { versionKey: false }
 );
