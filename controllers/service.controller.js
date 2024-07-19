@@ -1,3 +1,5 @@
 module.exports = {
-  getServices: async (_req, _res, _next) => {},
+  getServices: async (_req, res, _next) => {
+    return res.send("hello world");
+  },
 };

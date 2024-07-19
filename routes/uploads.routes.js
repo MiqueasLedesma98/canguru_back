@@ -16,7 +16,9 @@ router.put(
   "/:collection/:id",
   [
     validateJWT,
-    check("collection", "Debe ser un modelo válido").isIn(allowedCollections),
+    check("collection", "La colección debe ser una colección válida").isIn(
+      allowedCollections
+    ),
     check("id", "Debe ser un MongoID válido").isMongoId(),
     validationErros,
   ],
@@ -24,11 +26,26 @@ router.put(
 );
 
 router.delete(
-  "/:collection/:name",
-  [validateJWT, check("collection").isIn(allowedCollections), validationErros],
+  "/:collection/:id",
+  [
+    validateJWT,
+    check("collection", "La colección debe ser una colección válida").isIn(
+      allowedCollections
+    ),
+    validationErros,
+  ],
   controller.deleteImage
 );
 
-router.get("/:collection/:name", controller.showImage);
+router.get(
+  "/:collection/:name",
+  [
+    check("collection", "La colección debe ser una colección válida").isIn(
+      allowedCollections
+    ),
+    validationErros,
+  ],
+  controller.showImage
+);
 
 module.exports = router;

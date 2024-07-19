@@ -14,25 +14,30 @@ module.exports = {
 
       const collectionModel = require(`../models/${collection + ".model"}`);
 
-      const model = await collectionModel.findById(id);
-
-      if (!model) throw new Error("No se encontro el registro");
+      const { img: img_model } = await collectionModel
+        .findById(id)
+        .select(["img"])
+        .lean();
 
       const name = await uploadFile({ files: req.files, folder: collection });
 
-      const url = `/uploads/${collection}/${name}`;
+      const current_file_path =
+        img_model && join(__dirname, "..", ...img_model.split("/"));
 
-      if (Array.isArray(model.img)) {
-        model.img = [...model.img, url];
-      } else {
-        const imgPath = join(__dirname, "..", ...model.img.split("/"));
-        const exists = fs.existsSync(imgPath);
-
-        if (exists) fs.unlinkSync(exists);
-        model.img = url;
+      if (current_file_path) {
+        const exists = fs.existsSync(current_file_path);
+        if (exists) {
+          fs.unlinkSync(current_file_path);
+        }
       }
 
-      await model.save();
+      const doc = await collectionModel.findById(id);
+
+      const url = `/uploads/${collection}/${name}`;
+
+      doc.img = url;
+
+      await doc.save();
 
       return res
         .status(200)
@@ -57,9 +62,19 @@ module.exports = {
   },
   deleteImage: async (req, res, next) => {
     try {
-      const { collection, name } = req.params;
+      const { collection, id } = req.params;
 
-      const imgPath = join(__dirname, "../uploads", collection, name);
+      const model = require(`../models/${collection + ".model"}`);
+
+      const { img: model_img } = await model
+        .findById(id)
+        .select(["img"])
+        .lean();
+
+      if (!model_img)
+        throw new Error("No se encontro la imágen en el documento");
+
+      const imgPath = join(__dirname, "..", ...model_img.split("/"));
 
       const exists = fs.existsSync(imgPath);
 
@@ -67,12 +82,14 @@ module.exports = {
 
       fs.unlinkSync(imgPath);
 
-      if (collection === "user") {
-        await require(`../models/${collection + ".model"}`).findOneAndUpdate(
-          { img: name },
-          { $unset: { img: 1 } }
-        );
-      }
+      await model.findByIdAndUpdate(id, { $unset: { img: 1 } });
+
+      // if (collection === "user") {
+      //   await require(`../models/${collection + ".model"}`).findOneAndUpdate(
+      //     { img: name },
+      //     { $unset: { img: 1 } }
+      //   );
+      // }
 
       return res.send({ msg: "Imagen eliminada con éxito" });
     } catch (error) {

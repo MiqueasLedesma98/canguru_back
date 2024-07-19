@@ -8,4 +8,8 @@ const router = Router();
 
 router.post("/", [validateJWT, validationErros], controller.createBooking);
 
+router.get("/client", [validateJWT], controller.getBookingListClient);
+
+router.get("/provider", [validateJWT], controller.getBookingListProvider);
+
 module.exports = router;
