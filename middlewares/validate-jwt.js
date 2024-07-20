@@ -32,4 +32,14 @@ module.exports = {
       return res.status(500).json({ msg: error.message });
     }
   },
+  validateProvider: (req, res, next) => {
+    if (req.user.role !== "PROVIDER")
+      return res.status(401).json({ msg: "No autorizado" });
+    next();
+  },
+  validateAdmin: (req, res, next) => {
+    if (req.user.role !== "ADMIN")
+      return res.status(401).json({ msg: "No autorizado" });
+    next();
+  },
 };
