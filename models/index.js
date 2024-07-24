@@ -6,4 +6,5 @@ module.exports = {
   Review: require("./review.model"),
   Service: require("./service.model"),
   User: require("./user.model"),
+  Code: require("./code.model"),
 };

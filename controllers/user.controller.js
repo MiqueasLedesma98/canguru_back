@@ -1,5 +1,6 @@
 const { User, Availability, Location, Service } = require("../models");
 
+
 module.exports = {
   getUserById: async (req, res, next) => {
     try {
@@ -12,7 +13,6 @@ module.exports = {
       next(error);
     }
   },
-  update: async (_req, _res, _next) => {},
   updateProvider: async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -73,6 +73,7 @@ module.exports = {
       next(error);
     }
   },
-  getUserDetail: async (req, res, next) => {},
-  deleteUser: async (req, res, next) => {},
+  update: async (_req, _res, _next) => {},
+  getUserDetail: async (_req, _res, _next) => {},
+  deleteUser: async (_req, _res, _next) => {},
 };

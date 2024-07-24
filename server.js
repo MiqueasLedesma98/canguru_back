@@ -3,9 +3,11 @@ const { join } = require("path");
 const cors = require("cors");
 const express = require("express");
 const fileUpload = require("express-fileupload");
+const morgan = require("morgan");
 const routes = require("./routes");
 
 const { httpErrors } = require("./middlewares");
+const { transporter } = require("./config/nodemailer.config");
 
 class Server {
   constructor() {
@@ -14,6 +16,9 @@ class Server {
 
     // DB connection
     this.conn = conn();
+
+    // Emails
+    this.emailReady();
 
     // Middlewares
     this.middlewares();
@@ -35,6 +40,8 @@ class Server {
     );
 
     this.app.use(express.static(join(__dirname, "public")));
+
+    this.app.use(morgan("tiny"));
   }
 
   routes() {
@@ -43,6 +50,16 @@ class Server {
     });
 
     this.app.use(httpErrors);
+  }
+
+  emailReady() {
+    transporter.verify((err) => {
+      if (!err) {
+        console.log("La aplicación esta lista para enviar emails".bgGreen);
+      } else {
+        console.log("Node-mailer - error de configuración".bgRed);
+      }
+    });
   }
 
   listen() {

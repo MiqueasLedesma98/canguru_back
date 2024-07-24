@@ -3,4 +3,5 @@ module.exports = {
   ...require("./upload.helper"),
   ...require("./validators.helper"),
   ...require("./booking.helper"),
+  ...require("./email.helper"),
 };

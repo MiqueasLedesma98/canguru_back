@@ -40,4 +40,21 @@ router.post(
   controller.login
 );
 
+router.post(
+  "/recover",
+  [
+    check("email", "Debe ser un email válido").notEmpty().isEmail(),
+    validationErros,
+  ],
+  controller.email_recover
+);
+
+router.post("/recover/code", [
+  check("code", "Debe ser un número de 6 digitos")
+    .notEmpty()
+    .isLength(6)
+    .isNumeric(),
+  validationErros,
+]);
+
 module.exports = router;
