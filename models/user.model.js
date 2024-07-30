@@ -1,5 +1,7 @@
 const { model, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
+const Availability = require("./availability.model");
+const Location = require("./location.model");
 
 const providerDataSchema = new Schema(
   {
@@ -7,16 +9,16 @@ const providerDataSchema = new Schema(
       {
         type: [Schema.Types.ObjectId],
         ref: "Service",
-        required: [true, "El servicio es obligatorio"],
       },
     ],
-    availability: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Availability",
-        required: [true, "La disponibilidad es obligatoria"],
-      },
-    ],
+    lodging: {
+      type: Schema.Types.ObjectId,
+      ref: "Lodging",
+    },
+    availability: {
+      type: Schema.Types.ObjectId,
+      ref: "Availability",
+    },
     status: { type: Boolean, default: false },
     location: {
       type: Schema.Types.ObjectId,
@@ -24,7 +26,7 @@ const providerDataSchema = new Schema(
       required: [true, "La ubicación es obligatoria"],
     },
   },
-  { _id: false, versionKey: false }
+  { _id: false, versionKey: false, timestamps: false }
 );
 
 const userSchema = new Schema(
@@ -62,6 +64,34 @@ userSchema.pre("save", async function (next) {
       return next(error);
     }
   }
+
+  if (this.role === "PROVIDER" && !this.providerData) {
+    try {
+      const availability = new Availability({
+        provider: this._id,
+      });
+
+      const location = new Location({
+        provider: this._id,
+        address: "N/A",
+        city: "N/A",
+        zipCode: 0,
+        country: "N/A",
+      });
+
+      this.providerData = {
+        availability: availability._id,
+        location: location._id,
+      };
+
+      await Promise.all([availability.save(), location.save()]);
+
+      next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   next();
 });
 

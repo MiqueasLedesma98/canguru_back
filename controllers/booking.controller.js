@@ -12,6 +12,8 @@ module.exports = {
 
       await checkAvailability({ date, duration, provider });
 
+      console.log({ id: new Types.ObjectId(provider) });
+
       const booking = new Booking({
         service,
         provider,

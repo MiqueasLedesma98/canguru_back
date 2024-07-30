@@ -5,7 +5,7 @@ const Router = require("express");
 const { upload: controller } = require("../controllers");
 
 // Middlewares
-const { validateJWT, validationErros } = require("../middlewares");
+const { validateJWT, validationErrors } = require("../middlewares");
 const { check } = require("express-validator");
 
 const router = Router();
@@ -20,7 +20,7 @@ router.put(
       allowedCollections
     ),
     check("id", "Debe ser un MongoID válido").isMongoId(),
-    validationErros,
+    validationErrors,
   ],
   controller.uploadFile
 );
@@ -32,7 +32,7 @@ router.delete(
     check("collection", "La colección debe ser una colección válida").isIn(
       allowedCollections
     ),
-    validationErros,
+    validationErrors,
   ],
   controller.deleteImage
 );
@@ -43,7 +43,7 @@ router.get(
     check("collection", "La colección debe ser una colección válida").isIn(
       allowedCollections
     ),
-    validationErros,
+    validationErrors,
   ],
   controller.showImage
 );

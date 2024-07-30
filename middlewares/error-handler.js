@@ -14,7 +14,7 @@ module.exports = {
     console.error(err);
     return res.status(500).send(formatStack(err));
   },
-  validationErros: (req, res, next) => {
+  validationErrors: (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res

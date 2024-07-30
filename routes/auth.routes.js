@@ -6,7 +6,7 @@ const { check } = require("express-validator");
 const { auth: controller } = require("../controllers");
 
 // Middlewares
-const { validationErros } = require("../middlewares");
+const { validationErrors } = require("../middlewares");
 
 // Helpers
 const { userAlreadyExist, passwordIsValid, userExist } = require("../helpers");
@@ -25,7 +25,7 @@ router.post(
       .notEmpty()
       .custom(passwordIsValid),
     check("role").isIn(["CLIENT", "PROVIDER"]),
-    validationErros,
+    validationErrors,
   ],
   controller.register
 );
@@ -35,7 +35,7 @@ router.post(
   [
     check("email").isEmail().custom(userExist),
     check("password").notEmpty(),
-    validationErros,
+    validationErrors,
   ],
   controller.login
 );
@@ -44,7 +44,7 @@ router.post(
   "/recover",
   [
     check("email", "Debe ser un email válido").notEmpty().isEmail(),
-    validationErros,
+    validationErrors,
   ],
   controller.email_recover
 );
@@ -54,7 +54,7 @@ router.post("/recover/code", [
     .notEmpty()
     .isLength(6)
     .isNumeric(),
-  validationErros,
+  validationErrors,
 ]);
 
 module.exports = router;

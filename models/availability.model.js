@@ -32,7 +32,7 @@ const dayAvailabilitySchema = new Schema(
 const availabilitySchema = new Schema(
   {
     provider: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    days: [dayAvailabilitySchema],
+    days: { type: [dayAvailabilitySchema], default: [] },
   },
   { versionKey: false }
 );

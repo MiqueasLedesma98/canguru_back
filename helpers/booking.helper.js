@@ -2,6 +2,7 @@ const { Booking } = require("../models");
 
 module.exports = {
   checkAvailability: async ({ date, provider, duration }) => {
+
     const exists = await Booking.findOne({
       status: { $in: ["confirmed", "pending"] },
       provider,

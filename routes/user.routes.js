@@ -2,7 +2,7 @@
 const Router = require("express");
 
 // Middlewares
-const { validateJWT, validationErros } = require("../middlewares");
+const { validateJWT, validationErrors } = require("../middlewares");
 
 // Controllers
 const { user: controller } = require("../controllers");
@@ -15,17 +15,17 @@ router.get(
   [
     validateJWT,
     check("id", "Debe ser un ID válido").isMongoId(),
-    validationErros,
+    validationErrors,
   ],
   controller.getUserById
 );
 
-router.put(
-  "/provider/:id",
-  [validateJWT, validationErros],
-  controller.updateProvider
-);
+// router.put(
+//   "/provider/:id",
+//   [validateJWT, validationErrors],
+//   controller.updateProvider
+// );
 
-router.put("/:id", [validateJWT, validationErros], controller.update);
+router.put("/:id", [validateJWT, validationErrors], controller.update);
 
 module.exports = router;

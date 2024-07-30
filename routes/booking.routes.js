@@ -6,12 +6,12 @@ const { booking: controller } = require("../controllers");
 const {
   validateJWT,
   validateProvider,
-  validationErros,
+  validationErrors,
 } = require("../middlewares");
 
 const router = Router();
 
-router.post("/", [validateJWT, validationErros], controller.createBooking);
+router.post("/", [validateJWT, validationErrors], controller.createBooking);
 
 router.get(
   "/client",
@@ -19,7 +19,7 @@ router.get(
     validateJWT,
     check("page", "Debe ser un número").optional().isNumeric(),
     check("limit", "Debe ser un número").optional().isNumeric(),
-    validationErros,
+    validationErrors,
   ],
   controller.getBookingListClient
 );
@@ -31,7 +31,7 @@ router.get(
     validateProvider,
     check("page", "Debe ser un número").optional().isNumeric(),
     check("limit", "Debe ser un número").optional().isNumeric(),
-    validationErros,
+    validationErrors,
   ],
   controller.getBookingListProvider
 );

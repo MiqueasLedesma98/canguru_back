@@ -8,8 +8,6 @@ module.exports = {
     try {
       const { name, lastName, role, email, password } = req.body;
 
-      console.log({ body: req.body });
-
       const user = new User({
         name,
         lastName,
