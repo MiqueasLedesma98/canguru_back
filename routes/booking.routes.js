@@ -9,9 +9,22 @@ const {
   validationErrors,
 } = require("../middlewares");
 
+const { serviceExist } = require("../helpers");
+
 const router = Router();
 
-router.post("/", [validateJWT, validationErrors], controller.createBooking);
+router.post(
+  "/",
+  [
+    validateJWT,
+    check("service", "El servicio debe ser un ID válido")
+      .notEmpty()
+      .isMongoId()
+      .custom(serviceExist),
+    validationErrors,
+  ],
+  controller.createBooking
+);
 
 router.get(
   "/client",

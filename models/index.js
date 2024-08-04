@@ -7,4 +7,5 @@ module.exports = {
   Service: require("./service.model"),
   User: require("./user.model"),
   Code: require("./code.model"),
+  ProviderData: require("./provider_data.model"),
 };

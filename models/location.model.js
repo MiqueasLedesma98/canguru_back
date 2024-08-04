@@ -2,7 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const locationSchema = new Schema(
   {
-    provider: { type: Schema.Types.ObjectId, ref: "User" },
+    provider: { type: Schema.Types.ObjectId, ref: "User", unique: true },
     address: { type: String, required: [true, "Dirección es obligatoria"] },
     city: { type: String, required: [true, "La ciudad es obligatoria"] },
     state: { type: String, required: [true, "Provincia es obligatoria"] },

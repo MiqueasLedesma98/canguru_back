@@ -52,7 +52,7 @@ module.exports = {
       // Esperar a que la consulta a la base de datos se complete
       const user = await User.findOne({
         email: { $regex: new RegExp(email, "i") },
-        disabled: false,
+        status: true,
       });
 
       if (!user) {

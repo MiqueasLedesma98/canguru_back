@@ -2,32 +2,7 @@ const { model, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
 const Availability = require("./availability.model");
 const Location = require("./location.model");
-
-const providerDataSchema = new Schema(
-  {
-    services: [
-      {
-        type: [Schema.Types.ObjectId],
-        ref: "Service",
-      },
-    ],
-    lodging: {
-      type: Schema.Types.ObjectId,
-      ref: "Lodging",
-    },
-    availability: {
-      type: Schema.Types.ObjectId,
-      ref: "Availability",
-    },
-    status: { type: Boolean, default: false },
-    location: {
-      type: Schema.Types.ObjectId,
-      ref: "Location",
-      required: [true, "La ubicación es obligatoria"],
-    },
-  },
-  { _id: false, versionKey: false, timestamps: false }
-);
+const ProviderData = require("./provider_data.model");
 
 const userSchema = new Schema(
   {
@@ -44,7 +19,10 @@ const userSchema = new Schema(
       required: true,
       unique: [true, "El email ya esta registrado en la DB"],
     },
-    providerData: { type: providerDataSchema },
+    providerData: {
+      type: Schema.Types.ObjectId,
+      ref: "ProviderData",
+    },
     status: { type: Boolean, default: true },
     google: { type: Boolean, default: false },
     password: { type: String, required: ["La contraseñá es obligatoria"] },
@@ -73,18 +51,25 @@ userSchema.pre("save", async function (next) {
 
       const location = new Location({
         provider: this._id,
+        state: "N/A",
         address: "N/A",
         city: "N/A",
         zipCode: 0,
         country: "N/A",
       });
 
-      this.providerData = {
+      const providerData = new ProviderData({
         availability: availability._id,
         location: location._id,
-      };
+      });
 
-      await Promise.all([availability.save(), location.save()]);
+      this.providerData = providerData._id;
+
+      await Promise.all([
+        availability.save(),
+        location.save(),
+        providerData.save(),
+      ]);
 
       next();
     } catch (error) {

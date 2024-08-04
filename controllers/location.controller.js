@@ -21,9 +21,14 @@ module.exports = {
     }
   },
   getLocation: async (req, res, next) => {
-    // TODO: Terminar la ruta para traer las locaciónes
     try {
-      res.send({ msg: "ok" });
+      const location = await Location.findOne({ provider: req.uid })
+        .select(["-provider"])
+        .lean({
+          virtuals: true,
+        });
+
+      res.send({ msg: "ok", location });
     } catch (error) {
       next(error);
     }

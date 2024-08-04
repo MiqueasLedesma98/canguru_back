@@ -8,7 +8,7 @@ const { validateJWT, validationErrors } = require("../middlewares");
 const router = Router();
 
 router.get(
-  "/",
+  "/:category",
   [
     validateJWT,
     check("page", "Debe ser un número").optional().isNumeric(),
@@ -17,5 +17,9 @@ router.get(
   ],
   controller.getServices
 );
+
+router.post("/", [validateJWT, validationErrors], controller.createService);
+
+router.put("/:id", [validateJWT, validationErrors], controller.updateService);
 
 module.exports = router;

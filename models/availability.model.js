@@ -12,7 +12,6 @@ const dayAvailabilitySchema = new Schema(
   {
     day: {
       type: String,
-      unique: true,
       enum: [
         "LUNES",
         "MARTES",
@@ -22,19 +21,34 @@ const dayAvailabilitySchema = new Schema(
         "SABADO",
         "DOMINGO",
       ],
-      required: true,
     },
     timeslots: [timeslotSchema],
   },
-  { _id: false, versionKey: false }
+  { _id: false, versionKey: false, timestamps: false }
 );
 
 const availabilitySchema = new Schema(
   {
-    provider: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    provider: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
     days: { type: [dayAvailabilitySchema], default: [] },
   },
   { versionKey: false }
 );
+
+availabilitySchema.pre("save", async function (next) {
+  try {
+    // Se asegura de que days no contenga repetidos
+    this.days = Array.from(new Set(this.days));
+    next();
+  } catch (error) {
+    console.log(error);
+    throw new Error(`A ocurrido un error: ${error.message}`);
+  }
+});
 
 module.exports = model("Availability", availabilitySchema);

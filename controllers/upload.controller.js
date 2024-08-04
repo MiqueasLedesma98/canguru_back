@@ -5,12 +5,14 @@ const { response } = require("express");
 
 const placeholderPath = join(__dirname, "../assets", "no-image.jpg");
 
-// TODO: Cambiarlo para que funcione con solo model.img type string
-
 module.exports = {
   uploadFile: async (req, res, next) => {
     try {
       const { collection, id } = req.params;
+
+      console.log({ req });
+
+      if (!req.files) throw new Error("No se encontraron archivos");
 
       const collectionModel = require(`../models/${collection + ".model"}`);
 

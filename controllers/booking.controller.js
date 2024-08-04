@@ -10,10 +10,10 @@ module.exports = {
 
       const duration = { start, end };
 
+      // Verificar disponibilidad
       await checkAvailability({ date, duration, provider });
 
-      console.log({ id: new Types.ObjectId(provider) });
-
+      // Crear nueva reserva
       const booking = new Booking({
         service,
         provider,
@@ -29,7 +29,6 @@ module.exports = {
       next(error);
     }
   },
-  // TODO: Terminar controladores para traer las reservas
   getBookingListClient: async (req, res, next) => {
     try {
       const { uid = "" } = req;

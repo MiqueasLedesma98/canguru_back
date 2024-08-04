@@ -26,6 +26,10 @@ router.put(
   controller.update
 );
 
-router.get("/", [validateJWT, validationErrors], controller.getLocation);
+router.get(
+  "/",
+  [validateJWT, validateRol(["PROVIDER"]), validationErrors],
+  controller.getLocation
+);
 
 module.exports = router;
